@@ -1,3 +1,7 @@
+mod brackets_game;
+use brackets_game::greeter;
+
 fn main() {
-    println!("Hello, world!");
+    let g = greeter::Greeter {};
+    g.hello("you".to_string());
 }
