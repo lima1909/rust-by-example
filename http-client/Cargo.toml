@@ -1,0 +1,9 @@
+[package]
+name = "http-client"
+version = "0.1.0"
+authors = ["lima1909"]
+edition = "2018"
+
+[dependencies]
+log = "0.4.8"
+simplelog = "0.7.4"
