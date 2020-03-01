@@ -1,6 +1,8 @@
 use std::time::Instant;
 use reqwest;
 
+// https://www.youtube.com/watch?v=xnIDyMJZ4ws
+
 pub async fn get(url: &str) -> Result<(), reqwest::Error> {
     let now = Instant::now();
 
