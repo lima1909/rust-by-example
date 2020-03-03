@@ -1,11 +1,17 @@
 mod http;
 mod logging;
- 
+
+use log::info;
 #[tokio::main]
 async fn main() {
     logging::init();
-    
-    http::get("https://query1.finance.yahoo.com/v7/finance/quote?lang=en-US&region=US&corsDomain=finance.yahoo.com&symbols=ABEC.DE")
+
+    let r = http::get_portfolio(vec![
+        "ABEC.DE", "NFC.DE", "SIE.DE", "AMZ.DE", "O1BC.F", "DWWD.SG", "2B76.F", "EXS2.F", "OE7A.SG",
+    ])
     .await
     .unwrap();
+
+    info!("Result: {}", r.bodies.len());
+    info!("Elapsed time: {}", r.elapsed_time);
 }
