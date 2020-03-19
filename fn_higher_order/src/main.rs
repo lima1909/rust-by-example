@@ -16,3 +16,18 @@ fn main() {
 
     println!("plus one: {}", call_my_fn(5, plus_one));
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_call_my_fn() {
+        assert_eq!(5, call_my_fn(4, plus_one));
+    }
+
+    #[test]
+    fn test_call_my_fn_closure() {
+        assert_eq!(5, call_my_fn(4, |x| x + 1));
+    }
+}
