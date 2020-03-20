@@ -12,8 +12,8 @@ struct Person {
 }
 
 fn main() {
-    // let conn = Connection::open_in_memory().unwrap();
-    let conn = Connection::open("my.db").unwrap();
+    let conn = Connection::open_in_memory().unwrap();
+    // let conn = Connection::open("my.db").unwrap();
 
     // only handle the Err and ignore the Ok value
     if let Err(msg) = conn.execute(
@@ -41,23 +41,29 @@ fn main() {
         Err(msg) => println!("err by insert: {}", msg),
     };
 
-    match conn.prepare("SELECT id, name, data FROM person") {
-        Ok(mut stmt) => {
-            match stmt.query_map(params![], |row| {
-                Ok(Person {
-                    id: row.get(0)?,
-                    name: row.get(1)?,
-                    data: row.get(2)?,
-                })
-            }) {
-                Ok(person_iter) => {
-                    for person in person_iter {
-                        println!("Found person {:?}", person.unwrap());
-                    }
-                }
-                Err(msg) => println!("err by select: {}", msg),
-            };
+    let mut stmt = match conn.prepare("SELECT id, name, data FROM person") {
+        Ok(stmt) => stmt,
+        Err(msg) => {
+            println!("err by executing select statement: {}", msg);
+            // return is importand
+            // in the error case, the stmt has no valid value
+            // the Err returns the msg object, that is not compatible with stmt
+            return;
         }
-        Err(msg) => println!("err by executing select statement: {}", msg),
+    };
+
+    match stmt.query_map(params![], |row| {
+        Ok(Person {
+            id: row.get(0)?,
+            name: row.get(1)?,
+            data: row.get(2)?,
+        })
+    }) {
+        Ok(person_iter) => {
+            for person in person_iter {
+                println!("Found person {:?}", person.unwrap());
+            }
+        }
+        Err(msg) => println!("err by select: {}", msg),
     };
 }
