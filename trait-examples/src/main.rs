@@ -1,3 +1,5 @@
+// goog youtube link: https://www.youtube.com/watch?v=nvur2Ast8hE
+//
 trait Draw {
     fn draw(&self);
 }
